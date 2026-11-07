@@ -1,0 +1,18 @@
+rules_version = '2';
+
+// Eğitim için herkese açık: herkes mesajları okuyabilir ve yeni mesaj yazabilir.
+// Mesajlar sonradan değiştirilemez ve silinemez.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /messages/{messageId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['user', 'text', 'createdAt'])
+                    && request.resource.data.user is string
+                    && request.resource.data.user.size() > 0
+                    && request.resource.data.user.size() <= 20
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0
+                    && request.resource.data.text.size() <= 300;
+    }
+  }
+}

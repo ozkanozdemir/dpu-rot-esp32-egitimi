@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#0b1220">
+<title>Bulut Sohbet · DPÜ ROT ESP32 Eğitimi</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- İkonlar: sayfada <use href="#..."> ile tekrar kullanılır -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 3.5v3.5M14 3.5v3.5M10 17v3.5M14 17v3.5M3.5 10H7M3.5 14H7M17 10h3.5M17 14h3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-robot" viewBox="0 0 24 24"><rect x="4.5" y="8" width="15" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8V4.5M9.5 21v-2M14.5 21v-2M2.5 12.5v3M21.5 12.5v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="3.6" r="1.3" fill="currentColor"/><circle cx="9.3" cy="13" r="1.5" fill="currentColor"/><circle cx="14.7" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 00.6-7.96A6 6 0 006.6 9.1 4.75 4.75 0 007 18.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9.5a13 13 0 0118 0M6 13a8.5 8.5 0 0112 0M9 16.4a4 4 0 016 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="19.5" r="1.3" fill="currentColor"/></symbol>
+    <symbol id="i-github" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M4.5 4.2l16 7.3a.55.55 0 010 1L4.5 19.8a.5.5 0 01-.68-.62L6.6 12 3.82 4.82a.5.5 0 01.68-.62zM6.6 12h7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5M16 4.8a3.5 3.5 0 010 6.4M18 14.8c2 .7 3.2 2.4 3.5 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 012 2v12a2 2 0 01-2 2h-3M10 16l-4-4 4-4M6 12h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <!-- ===================== Karşılama / giriş ekranı ===================== -->
+  <section id="login" class="login">
+    <div class="login-grid">
+      <header class="intro">
+        <p class="eyebrow">
+          <span class="eyebrow-mark"><svg class="icon"><use href="#i-robot"/></svg></span>
+          DPÜ Robot ve Otomasyon Topluluğu · ESP32 Eğitimi
+        </p>
+        <h1>ESP32 <span>Bulut Sohbet</span></h1>
+        <p class="lead">
+          Bu sayfa internetten değil, masadaki <strong>ESP32-S3</strong> kartından geliyor.
+          Kart kendi Wi-Fi ağını yayınlıyor, aynı anda telefonun internetine bağlanıyor ve
+          yazdığınız her mesajı <strong>Google Firebase Firestore</strong>'a kaydediyor.
+        </p>
+
+        <!-- Sistemin nasıl çalıştığı: tarayıcı -> ESP32 -> Firestore -->
+        <ol class="flow" aria-label="Sistem nasıl çalışıyor">
+          <li class="node">
+            <span class="node-icon"><svg class="icon"><use href="#i-phone"/></svg></span>
+            <strong>Telefonunuz</strong>
+            <span>Tarayıcı</span>
+          </li>
+          <li class="link"><span lang="en">Wi-Fi <br>WebSocket</span></li>
+          <li class="node node-board">
+            <span class="node-icon"><svg class="icon"><use href="#i-chip"/></svg></span>
+            <strong>ESP32-S3</strong>
+            <span>Web sunucusu</span>
+          </li>
+          <li class="link"><span lang="en">Hotspot <br>HTTPS</span></li>
+          <li class="node">
+            <span class="node-icon"><svg class="icon"><use href="#i-cloud"/></svg></span>
+            <strong>Firestore</strong>
+            <span>Bulut veritabanı</span>
+          </li>
+        </ol>
+      </header>
+
+      <form id="login-form" class="card login-card" autocomplete="off">
+        <h2>Sohbete katıl</h2>
+        <p class="muted">Diğerlerinin sizi göreceği bir isim seçin.</p>
+        <label for="name-input" class="visually-hidden">Kullanıcı adı</label>
+        <input id="name-input" type="text" maxlength="20" placeholder="Kullanıcı adınız" required autofocus>
+        <button type="submit" id="login-button" class="primary">Sohbete gir</button>
+        <p id="login-error" class="error" role="alert" hidden></p>
+        <div class="status-grid">
+          <p class="status-line"><span id="login-dot" class="dot"></span><span id="login-status">Karta bağlanıyor…</span></p>
+          <p class="status-line"><span id="cloud-dot" class="dot"></span><span id="cloud-status">Firestore bekleniyor…</span></p>
+        </div>
+      </form>
+
+      <ol class="card steps" aria-label="Nasıl katılınır">
+        <li><span class="step-icon">1</span><div><strong id="ap-name">DPU-ROT-ESP32</strong> Wi-Fi ağına bağlanın <span class="muted small">(şifre: <span id="ap-password">12345678</span>)</span></div></li>
+        <li><span class="step-icon">2</span><div>Tarayıcıda <strong id="site-address">192.168.4.1</strong> adresini açın</div></li>
+        <li><span class="step-icon">3</span><div>Bir isim seçin ve yazın; mesajlarınız buluta kaydedilsin</div></li>
+      </ol>
+
+      <aside class="card repo-card" aria-label="Proje kaynak kodu">
+        <img class="qr" src="/img/github-qr.svg" alt="GitHub deposunun QR kodu" width="120" height="120">
+        <div class="repo-text">
+          <p class="repo-title"><svg class="icon"><use href="#i-github"/></svg> Projeyi indirin</p>
+          <a class="repo-link" href="https://github.com/ozkanozdemir/dpu-rot-esp32-egitimi" target="_blank" rel="noopener">github.com/ozkanozdemir/dpu-rot-esp32-egitimi</a>
+          <p class="muted small">Kartın kodu ve bu sayfa açık kaynak. QR kodu telefonunuzun kamerasıyla okutun.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================== Sohbet ekranı ===================== -->
+  <section id="chat" class="chat" hidden>
+    <header class="chat-header">
+      <div class="brand">
+        <span class="brand-mark"><svg class="icon"><use href="#i-robot"/></svg></span>
+        <div>
+          <strong>Bulut Sohbet</strong>
+          <span class="brand-sub"><span id="status-dot" class="dot"></span><span id="header-status">ESP32-S3 · Firestore</span></span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="users-toggle" class="ghost" type="button" aria-expanded="false" aria-controls="users">
+          <svg class="icon"><use href="#i-users"/></svg><span id="user-count">0</span>
+        </button>
+        <a class="ghost icon-only" href="https://github.com/ozkanozdemir/dpu-rot-esp32-egitimi" target="_blank" rel="noopener" aria-label="Projeyi GitHub'da aç" title="github.com/ozkanozdemir/dpu-rot-esp32-egitimi">
+          <svg class="icon"><use href="#i-github"/></svg>
+        </a>
+        <button id="leave-button" class="ghost" type="button" title="Sohbetten çık">
+          <svg class="icon"><use href="#i-logout"/></svg><span class="hide-sm">Çıkış</span>
+        </button>
+      </div>
+    </header>
+
+    <aside id="users" class="users">
+      <h2>Bu kartta çevrimiçi</h2>
+      <ul id="user-list"></ul>
+      <a class="repo-mini" href="https://github.com/ozkanozdemir/dpu-rot-esp32-egitimi" target="_blank" rel="noopener">
+        <img src="/img/github-qr.svg" alt="" width="64" height="64">
+        <span><strong><svg class="icon"><use href="#i-github"/></svg> Projeyi indirin</strong>github.com/ozkanozdemir/dpu-rot-esp32-egitimi</span>
+      </a>
+    </aside>
+
+    <main class="messages-wrap">
+      <ol id="messages" class="messages" aria-live="polite"></ol>
+      <p id="empty" class="empty">Henüz mesaj yok. İlk mesajı siz yazın! 👋</p>
+      <form id="message-form" class="composer" autocomplete="off">
+        <label for="message-input" class="visually-hidden">Mesaj</label>
+        <input id="message-input" type="text" maxlength="300" placeholder="Mesaj yazın…">
+        <button type="submit" class="primary send" aria-label="Gönder"><svg class="icon"><use href="#i-send"/></svg></button>
+      </form>
+    </main>
+  </section>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
