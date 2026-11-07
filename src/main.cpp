@@ -39,7 +39,7 @@ const char *AP_NAME_PREFIX = "DPU-ROT-ESP32-";
 const char *AP_PASSWORD = "12345678";  // en az 8 karakter
 
 // Firebase projesi ve mesajların tutulduğu Firestore koleksiyonu.
-const char *FIREBASE_PROJECT_ID = "dpu-rot-esp32-sohbet";
+const char *FIREBASE_PROJECT_ID = "dpu-rot-esp32-egitimi";
 const char *COLLECTION = "messages";
 
 const unsigned long POLL_MS = 4000;         // Firestore'daki yeni mesajlara kaç ms'de bir bakılsın
