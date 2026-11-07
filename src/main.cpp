@@ -456,10 +456,10 @@ void setup() {
 
   // Kart hem telefona bağlansın (istemci) hem kendi ağını yayınlasın (erişim noktası).
   WiFi.mode(WIFI_AP_STA);
-  uint8_t mac[6];
-  WiFi.softAPmacAddress(mac);
+  // Ağ adının sonu: kartın kendi MAC adresinin son iki baytı (her kartta farklı).
+  uint64_t mac = ESP.getEfuseMac();
   char suffix[5];
-  snprintf(suffix, sizeof(suffix), "%02X%02X", mac[4], mac[5]);
+  snprintf(suffix, sizeof(suffix), "%02X%02X", (uint8_t)(mac >> 32), (uint8_t)(mac >> 40));
   apName = String(AP_NAME_PREFIX) + suffix;
   WiFi.softAP(apName.c_str(), AP_PASSWORD);
   WiFi.begin(HOTSPOT_SSID, HOTSPOT_PASSWORD);
